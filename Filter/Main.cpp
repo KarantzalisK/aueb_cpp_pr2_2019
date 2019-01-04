@@ -7,6 +7,7 @@
 #include "Filter.h"
 #include "FilterGamma.h"
 #include "Array.h"
+#include "FilterBlur.h"
 using namespace std;
 using namespace imaging;
 
@@ -94,7 +95,8 @@ void caclulateNegative(Image & Image,int & width,int & height);
 				cout << "Image dimensions are: " << w << " x " << h << endl;
 
 
-				caclulateNegative(myImage, w, h);
+				//caclulateNegative(myImage, w, h);
+
 
 				/*FilterGamma myFilter2 = FilterGamma(0.7,myImage);
 				myFilter2 << myImage;
@@ -109,7 +111,11 @@ void caclulateNegative(Image & Image,int & width,int & height);
 				myFilter3 << *myFilter.imageBuffer;*/
 
 				//myFilter3.imageBuffer->save(filterfile, second);
-				myImage.save(filterfile, second);
+
+				FilterBlur myFilterBlur(1, myImage);
+				myFilterBlur << myImage;
+
+				myFilterBlur.imageBuffer->save(filterfile, second);
 
 			}
 
