@@ -6,6 +6,7 @@
 #include "FilterLinear.h"
 #include "Filter.h"
 #include "FilterGamma.h"
+#include "Array.h"
 using namespace std;
 using namespace imaging;
 
@@ -93,9 +94,9 @@ void caclulateNegative(Image & Image,int & width,int & height);
 				cout << "Image dimensions are: " << w << " x " << h << endl;
 
 
-				//caclulateNegative(myImage, w, h);
+				caclulateNegative(myImage, w, h);
 
-				FilterGamma myFilter2 = FilterGamma(0.7,myImage);
+				/*FilterGamma myFilter2 = FilterGamma(0.7,myImage);
 				myFilter2 << myImage;
 
 				math::Vec3<float> a = math::Vec3<float>(1,0.8,0.3);
@@ -105,9 +106,10 @@ void caclulateNegative(Image & Image,int & width,int & height);
 				myFilter << *myFilter2.imageBuffer;
 
 				FilterGamma myFilter3 = FilterGamma(1.2,myImage);
-				myFilter3 << *myFilter.imageBuffer;
+				myFilter3 << *myFilter.imageBuffer;*/
 
-				myFilter3.imageBuffer->save(filterfile, second);
+				//myFilter3.imageBuffer->save(filterfile, second);
+				myImage.save(filterfile, second);
 
 			}
 
@@ -133,6 +135,11 @@ void caclulateNegative(Image & Image,int & width,int & height);
 			} while (!(option == "1" || option == "2"));
 
 		} while (option=="1");
+
+
+	
+
+
 		system("pause");
 		return 0;
 	}

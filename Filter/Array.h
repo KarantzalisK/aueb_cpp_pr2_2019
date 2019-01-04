@@ -138,27 +138,40 @@ namespace math
 		*/
 		Array<T> & operator = (const Array<T> & right);
 
-		Array<T>& operator ()(unsigned int x, unsigned int y) const;
+		Array<T>& operator()(unsigned int x, unsigned int y) const;
+
 	};
 
-
+	
 
 	/*! Obtains a pointer to the internal data. */
 	template <typename T>
 	std::vector<T>* Array<T>::getRawDataPtr()
 	{
-		return buffer;
+		//return buffer;
+	    return buffer.data(); //returns address of the initial element
 	}
 
 	/*! Obtains the color of the image at location (x,y). */
-	template <typename T>
-	T Array<T>::getVector(unsigned x, unsigned y) const
+	template<typename T>
+	T Array<T>::getVector(unsigned int x, unsigned int y) const
+	{
+		//return buffer.data()[..]
+		if ((x <= width) && (y <= height) && (x * y >= 0))
+		{
+			return buffer[y * width + x]; //y*width+x represents where the Vector (Color) is on 1D array (buffer)
+		}
+		return T();
+	}
+
+	/*! Sets the RGB values for an (x,y) Vector. */
+	template<typename T>
+	inline void Array<T>::setVector(unsigned int x, unsigned int y, T & value)
 	{
 		if ((x <= width) && (y <= height) && (x * y >= 0))
 		{
-			return buffer.data()[y * width + x]; //y*width+x represents where the Vector (Color) is on 1D array (buffer)
+			buffer[y * width + x] = value; //y*width+x represents where the Vector (Color) is on 1D array (buffer)
 		}
-		return T();
 	}
 
 	/*! Copies the image data from an external raw buffer to the internal image buffer. */
@@ -171,23 +184,12 @@ namespace math
 		}
 	}
 
-	/*! Sets the RGB values for an (x,y) Vector. */
-	template <typename T>
-	void Array<T>::setVector(unsigned x, unsigned y, T& value)
-	{
-		if ((x <= width) && (y <= height) && (x * y >= 0))
-		{
-			buffer.data()[y * width + x] = value; //y*width+x represents where the Vector (Color) is on 1D array (buffer)
-		}
-	}
-
-
 	/*! Default constructor. */
 	template <typename T>
 	Array<T>::Array() :  width(0), height(0){}
 
-	template <typename T>
 	/*! Constructor with width and height specification. */
+	template <typename T>
 	Array<T>::Array(unsigned int width, unsigned int height)
 	{
 		this->width = width;
@@ -229,14 +231,13 @@ namespace math
 	}
 
 	//Operator () 
-	template <typename T>
-	Array<T>& Array<T>::operator()(unsigned x, unsigned y) const
+	template<typename T>
+	Array<T>& Array<T>::operator()(unsigned int x, unsigned int y) const
 	{
 		return &buffer[y * width + x];
 	}
 
 	
-
-} //namespace Array
+} 
 
 #endif
