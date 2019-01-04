@@ -9,6 +9,7 @@ class FilterBlur: public math::Array<math::Vec3<float>> , public Filter
 {
 protected:
 	unsigned int sizeN;
+	Image * imageBuffer;
 	std::vector<math::Vec3<float>> vecF;
 public:
 	FilterBlur(unsigned int sizeN, const Image & src);

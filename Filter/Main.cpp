@@ -113,9 +113,9 @@ void caclulateNegative(Image & Image,int & width,int & height);
 				//myFilter3.imageBuffer->save(filterfile, second);
 
 				FilterBlur myFilterBlur(1, myImage);
-				myFilterBlur << myImage;
+				myImage=myFilterBlur << myImage;
 
-				myFilterBlur.imageBuffer->save(filterfile, second);
+				myImage.save(filterfile, second);
 
 			}
 
