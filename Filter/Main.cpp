@@ -16,7 +16,6 @@ void caclulateNegative(Image & Image,int & width,int & height);
 	int main(int argc, char* argv[]) {
 		int w;
 		int h;
-
 		string input;
 		string first;
 		string second;
@@ -93,23 +92,24 @@ void caclulateNegative(Image & Image,int & width,int & height);
 				h = myImage.getHeight();
 				cout << "Image dimensions are: " << w << " x " << h << endl;
 
-
 				caclulateNegative(myImage, w, h);
 
-				/*FilterGamma myFilter2 = FilterGamma(0.7,myImage);
-				myFilter2 << myImage;
+				//FilterGamma myFilter2 = FilterGamma(0.7);
+				//myImage = myFilter2 << myImage;
+				myImage.save(filterfile, second);
+				//myFilter2.imageBuffer->save(filterfile, second);
 
-				math::Vec3<float> a = math::Vec3<float>(1,0.8,0.3);
+				/*math::Vec3<float> a = math::Vec3<float>(1, 0.8, 0.3);
 				math::Vec3<float> c = math::Vec3<float>(0.1, 0.1, 0.3);
-				FilterLinear myFilter = FilterLinear(a,c,myImage);
+				FilterLinear myFilter = FilterLinear(a, c, myImage);
 
 				myFilter << *myFilter2.imageBuffer;
 
-				FilterGamma myFilter3 = FilterGamma(1.2,myImage);
+				FilterGamma myFilter3 = FilterGamma(1.2, myImage);
 				myFilter3 << *myFilter.imageBuffer;*/
 
-				//myFilter3.imageBuffer->save(filterfile, second);
-				myImage.save(filterfile, second);
+				
+				//myImage.save(filterfile, second);
 
 			}
 
