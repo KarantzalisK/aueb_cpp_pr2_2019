@@ -150,6 +150,7 @@
     <ClInclude Include="Array.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Filter.h" />
+    <ClInclude Include="FilterBlur.h" />
     <ClInclude Include="FilterGamma.h" />
     <ClInclude Include="FilterLinear.h" />
     <ClInclude Include="Image.h" />

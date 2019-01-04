@@ -47,5 +47,8 @@
     <ClInclude Include="FilterGamma.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FilterBlur.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
