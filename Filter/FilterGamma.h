@@ -1,4 +1,3 @@
-#pragma once
 #ifndef _FILTERGAMMA
 #define _FILTERGAMMA
 
@@ -8,12 +7,17 @@ class FilterGamma : public Filter
 {
 protected:
 	float gamma;
+	
 public:
-
-	FilterGamma(float gamma, const Image & src)
+	Image * imageBuffer;
+	FilterGamma(float gamma):Filter()
 	{
 		this->gamma = gamma;
-		imageBuffer = new Image(src);
+		imageBuffer = new Image();
+	}
+
+	~FilterGamma() {
+		delete imageBuffer;
 	}
 
 	Image operator<<(const Image& image) override;
@@ -25,18 +29,17 @@ public:
 
 inline Image FilterGamma::operator<<(const Image& image)
 {
-	//delete[] imageBuffer;
-	imageBuffer = nullptr;
-	imageBuffer = new Image(image);
-
+	//imageBuffer = new Image(image);
+	*imageBuffer = image;
 	math::Vec3<float> temp;
-	int height = imageBuffer->getHeight();
-	int width = imageBuffer->getWidth();
+	//cout << (*imageBuffer == nullptr);
+	int height = (*imageBuffer).getHeight();
+	int width = (*imageBuffer).getWidth();
 
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++)
 		{
-			temp = imageBuffer->getVector(x, y);
+			temp = (*imageBuffer).getVector(x, y);
 			temp.r= pow(temp.r,gamma);
 			temp.g= pow(temp.g, gamma);
 			temp.b= pow(temp.b, gamma);
@@ -45,7 +48,7 @@ inline Image FilterGamma::operator<<(const Image& image)
 			temp = temp.clampToLowerBound(0.0);
 			temp = temp.clampToUpperBound(1.0);
 
-			imageBuffer->setVector(x, y, temp);
+			(*imageBuffer).setVector(x, y, temp);
 		}
 	}
 	return *imageBuffer;

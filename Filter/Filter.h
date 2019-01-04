@@ -7,14 +7,14 @@ using namespace imaging;
 class Filter
 {
 public:
-	Image * imageBuffer;
+	//Image * imageBuffer;
 
 public:
 	//Default Constructor
-	Filter(){ imageBuffer = nullptr;}
+	Filter(){}
 
 	//Copy Constructor
-	Filter(const Image & src){ imageBuffer = new Image(src);}
+	Filter(const Image & src){ }
 
 	//Operator <<
 	virtual Image operator << (const Image & image)=0;

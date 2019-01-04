@@ -141,14 +141,13 @@ namespace math
 		Array<T>& operator()(unsigned int x, unsigned int y) const;
 
 	};
-
+	//C:\Users\petro\Desktop\filter super\ExampleImages\Image01.ppm
 	
 
 	/*! Obtains a pointer to the internal data. */
 	template <typename T>
 	std::vector<T>* Array<T>::getRawDataPtr()
 	{
-		//return buffer;
 	    return buffer.data(); //returns address of the initial element
 	}
 
@@ -226,8 +225,10 @@ namespace math
 	template <typename T>
 	Array<T>& Array<T>::operator=(const Array<T>& right)
 	{
-		Array left = Array(right);
-		return left;
+		width = right.width;
+		height = right.height;
+		buffer.assign(right.buffer.begin(), right.buffer.end());
+		return *this;
 	}
 
 	//Operator () 

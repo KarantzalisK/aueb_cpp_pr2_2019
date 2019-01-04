@@ -1,4 +1,3 @@
-#pragma once
 #ifndef _FILTERLINEAR
 #define _FILTERLINEAR
 
@@ -9,6 +8,7 @@ class FilterLinear: public Filter
 protected:
 	math::Vec3<float> a;
 	math::Vec3<float> c;
+	Image * imageBuffer;
 public:
 
 	FilterLinear(math::Vec3<float> a, math::Vec3<float> c, const Image & src);
@@ -32,7 +32,6 @@ public:
 
  inline Image FilterLinear::operator<<(const Image& image)
 {
-	//delete[] imageBuffer;
 	imageBuffer = nullptr;
 	imageBuffer = new Image(image);
 
