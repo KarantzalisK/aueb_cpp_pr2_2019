@@ -59,28 +59,25 @@ inline Image FilterBlur::operator<<(const Image & image)
 	int myWidth = (int)imageBuffer->getWidth();
 	int myHeight = (int)imageBuffer->getHeight();
 
-	for(int y=1; y< myHeight-1;y++)
+	for(int y=0; y< myHeight;y++)
 	{
-		for (int x = 1; x < myWidth-1; x++)
+		for (int x = 0; x < myWidth; x++)
 		{
 			math::Vec3<float> total(0);
-			int ksize = 3;
+			int ksize = 7;
 			for (int fy = -1; fy <= 1; fy++)
 				for (int fx = -1; fx <= 1; fx++)
 				{
 					int tx = x + fx;
-					int ty = y + fy;
-					
-						total += imageBuffer->getVector(tx,ty);
-					
+					int ty = y + fy;	
+					if ((tx>=0) && (ty>=0) && (tx < myWidth) && (ty < myHeight)) {
+						total += imageBuffer->getVector(tx, ty);
+					}					
 				}
-
-			
+		
 			total = total / 9;
 			imageBuffer->setVector(x, y, total);
-
 		}
-
 	}
 
 

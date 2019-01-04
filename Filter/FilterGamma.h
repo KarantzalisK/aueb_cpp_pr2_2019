@@ -32,7 +32,6 @@ inline Image FilterGamma::operator<<(const Image& image)
 	//imageBuffer = new Image(image);
 	*imageBuffer = image;
 	math::Vec3<float> temp;
-	//cout << (*imageBuffer == nullptr);
 	int height = (*imageBuffer).getHeight();
 	int width = (*imageBuffer).getWidth();
 
