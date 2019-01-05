@@ -22,7 +22,6 @@ public:
 
 	Image operator<<(const Image& image) override;
 
-	//~FilterGamma() { delete[] imageBuffer; }
 };
 
 

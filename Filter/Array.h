@@ -95,7 +95,7 @@ namespace math
 		*
 		*  \param data_ptr is the reference to the preallocated buffer from where to copy the data to the Image object.
 		*/
-		void setData(const T * & data_ptr);
+		void setData(const std::vector<T> * & data_ptr);
 
 		// constructors and destructor
 
@@ -120,7 +120,7 @@ namespace math
 		*
 		* \see setData
 		*/
-		Array<T>(unsigned int width, unsigned int height, const T * data_ptr);
+		Array<T>(unsigned int width, unsigned int height, const std::vector<T> * data_ptr);
 
 		/*! Copy constructor.
 		*
@@ -138,7 +138,7 @@ namespace math
 		*/
 		Array<T> & operator = (const Array<T> & right);
 
-		Array<T>& operator()(unsigned int x, unsigned int y) const;
+		T & operator()(unsigned int x, unsigned int y) ;
 
 	};
 	//C:\Users\petro\Desktop\filter super\ExampleImages\Image01.ppm
@@ -148,7 +148,7 @@ namespace math
 	template <typename T>
 	std::vector<T>* Array<T>::getRawDataPtr()
 	{
-	    return buffer.data(); //returns address of the initial element
+	    return &buffer; //returns address of the initial element
 	}
 
 	/*! Obtains the color of the image at location (x,y). */
@@ -156,7 +156,7 @@ namespace math
 	T Array<T>::getVector(unsigned int x, unsigned int y) const
 	{
 		//return buffer.data()[..]
-		if ((x <= width) && (y <= height) && (x * y >= 0))
+		if ((x < width) && (y < height) && (x * y >= 0))
 		{
 			return buffer[y * width + x]; //y*width+x represents where the Vector (Color) is on 1D array (buffer)
 		}
@@ -167,7 +167,7 @@ namespace math
 	template<typename T>
 	inline void Array<T>::setVector(unsigned int x, unsigned int y, T & value)
 	{
-		if ((x <= width) && (y <= height) && (x * y >= 0))
+		if ((x < width) && (y < height) && (x * y >= 0))
 		{
 			buffer[y * width + x] = value; //y*width+x represents where the Vector (Color) is on 1D array (buffer)
 		}
@@ -175,7 +175,7 @@ namespace math
 
 	/*! Copies the image data from an external raw buffer to the internal image buffer. */
 	template <typename T>
-	void Array<T>::setData(const T*& data_ptr)
+	void Array<T>::setData(const std::vector<T>*& data_ptr)
 	{
 		if (width* height > 0 && data_ptr != nullptr)
 		{
@@ -185,7 +185,7 @@ namespace math
 
 	/*! Default constructor. */
 	template <typename T>
-	Array<T>::Array() :  width(0), height(0){}
+	Array<T>::Array() :  width(0), height(0),buffer(0){}
 
 	/*! Constructor with width and height specification. */
 	template <typename T>
@@ -193,11 +193,12 @@ namespace math
 	{
 		this->width = width;
 		this->height = height;
+		buffer= std::vector<T>(width*height);
 	}
 
 	template <typename T>
 	/*! Constructor with data initialization. */
-	Array<T>::Array(unsigned int width, unsigned int height, const T* data_ptr)
+	Array<T>::Array(unsigned int width, unsigned int height, const std::vector<T>* data_ptr)
 	{
 		this->width = width;
 		this->height = height;
@@ -233,9 +234,9 @@ namespace math
 
 	//Operator () 
 	template<typename T>
-	Array<T>& Array<T>::operator()(unsigned int x, unsigned int y) const
+	T & Array<T>::operator()(unsigned int x, unsigned int y) 
 	{
-		return &buffer[y * width + x];
+		return buffer[y * width + x];
 	}
 
 	

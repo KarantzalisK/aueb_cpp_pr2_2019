@@ -11,28 +11,28 @@ protected:
 	Image * imageBuffer;
 public:
 
-	FilterLinear(math::Vec3<float> a, math::Vec3<float> c, const Image & src);
+	FilterLinear(math::Vec3<float> a, math::Vec3<float> c);
 
-	//~FilterLinear();
 	Image operator<<(const Image& image) override;
+	~FilterLinear();
 };
 
+inline FilterLinear::~FilterLinear()
+{
+	delete imageBuffer;
+}
 
- inline FilterLinear::FilterLinear(math::Vec3<float> a, math::Vec3<float> c, const Image & src )
+ inline FilterLinear::FilterLinear(math::Vec3<float> a, math::Vec3<float> c)
 {
 	this->a = a;
 	this->c = c;
-	imageBuffer = new Image(src);
+	imageBuffer=new Image();
 }
 
-// inline FilterLinear::~FilterLinear()
-//{
-//	delete[] imageBuffer;
-//}
 
  inline Image FilterLinear::operator<<(const Image& image)
 {
-	imageBuffer = nullptr;
+	delete imageBuffer;
 	imageBuffer = new Image(image);
 
 	math::Vec3<float> temp;
@@ -52,6 +52,8 @@ public:
 	}
 	return *imageBuffer;
 }
+
+
 
 
 

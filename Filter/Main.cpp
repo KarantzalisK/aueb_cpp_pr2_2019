@@ -8,6 +8,7 @@
 #include "FilterGamma.h"
 #include "Array.h"
 #include "FilterBlur.h"
+#include "FilterLaplace.h"
 using namespace std;
 using namespace imaging;
 
@@ -112,11 +113,18 @@ void caclulateNegative(Image & Image,int & width,int & height);
 
 				//myFilter3.imageBuffer->save(filterfile, second);
 
-				FilterBlur myFilterBlur(1, myImage);
-				myImage=myFilterBlur << myImage;
+				//FilterBlur myFilterBlur(3, myImage);
+				//myImage=myFilterBlur << myImage;
+				math::Vec3<float> a = math::Vec3<float>(-2, -2, -2);
+				math::Vec3<float> c = math::Vec3<float>(1, 1, 1);
+				FilterLinear myFilter = FilterLinear(a, c);
+				FilterLaplace myFilter2=FilterLaplace();
+
+				myImage = myFilter2 << myImage;
+				/*myImage = myFilter << myImage;*/
+				myImage = myFilter << myImage;
 
 				myImage.save(filterfile, second);
-
 			}
 
 			

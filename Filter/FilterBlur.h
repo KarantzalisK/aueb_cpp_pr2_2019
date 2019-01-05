@@ -5,57 +5,51 @@
 #include "Vec3.h"
 #include "Filter.h"
 
-class FilterBlur: public math::Array<math::Vec3<float>> , public Filter
+class FilterBlur: public math::Array<float> , public Filter
 {
 protected:
-	unsigned int sizeN;
+	int sizeN;
 	Image * imageBuffer;
-	std::vector<math::Vec3<float>> vecF;
+	Array<float> ArrayF;
 public:
-	FilterBlur(unsigned int sizeN, const Image & src);
+	FilterBlur()
+	{
+		sizeN = 0;
+		imageBuffer = new Image();
+	}
+
+	FilterBlur(unsigned int sizeN);
 	Image operator<<(const Image& image) override;
+
+	~FilterBlur() {
+		delete imageBuffer;
+	}
 };
 
-inline FilterBlur::FilterBlur(unsigned sizeN, const Image& src)
+
+
+inline FilterBlur::FilterBlur(unsigned int sizeN)
 {
-	 this->sizeN = 2*sizeN+1;
-	 imageBuffer = new Image(src);
-	 vecF.clear();
-	 vecF=std::vector<math::Vec3<float>>(12, (float)1 / 9);
+	this->sizeN = sizeN;
+	imageBuffer = new Image();
+	ArrayF.getRawDataPtr()->clear();
+	ArrayF.getRawDataPtr()->shrink_to_fit();
+	ArrayF=Array<float>(sizeN,sizeN);
+	float myVar = 1.0 / sizeN/sizeN;
+	for (int x=0; x<sizeN; x++)
+	{
+		for(int y = 0; y < sizeN; y++)
+		{
+			ArrayF.setVector(x, y, myVar);
+		}
+	}
+	
 }
 
 inline Image FilterBlur::operator<<(const Image & image)
 {
-	//float myf = (1.0 / 9.0);
-	//math::Vec3<float> divider1 = math::Vec3<float>(myf);
-	//for (int y = 1; y < (int)imageBuffer->getHeight()-1; y++) {
-	//	for (int x = 1; x < (int)imageBuffer->getWidth()-1; x++)
-	//	{
-	//		math::Vec3<float> total = 0;
-	//		int iterations = 0;
-	//		int fy = y - 1;
-	//		int fx = x - 1;
-	//		int targetFy = y + 1;
-	//		int targetFx = x + 1;
-	//		//if (fy < 0) fy = 0;
-	//		//if (fx < 0) fx = 0;
-	//		//if (targetFy >= (int)imageBuffer->getHeight())targetFy= imageBuffer->getHeight() - 1;
-	//		//if (targetFx >= (int)imageBuffer->getWidth()) targetFx = imageBuffer->getWidth() - 1;
-	//		while(fy<= targetFy)
-	//		{
-	//			while(fx<= targetFx && iterations<9)
-	//			{
-	//				total += imageBuffer->getVector(fx, fy)*myf;
-	//				fx++;
-	//				iterations++;
-	//			}
-	//			fy++;
-	//			fx = 0;
-	//		}
-	//		imageBuffer->setVector(x, y, total);
-	//	}
-	//}
-
+	delete imageBuffer;
+	imageBuffer = new Image(image);
 	int myWidth = (int)imageBuffer->getWidth();
 	int myHeight = (int)imageBuffer->getHeight();
 
@@ -64,24 +58,17 @@ inline Image FilterBlur::operator<<(const Image & image)
 		for (int x = 0; x < myWidth; x++)
 		{
 			math::Vec3<float> total(0);
-			int ksize = 7;
-			for (int fy = -1; fy <= 1; fy++)
-				for (int fx = -1; fx <= 1; fx++)
+			
+			for (int fy = -(sizeN/2); fy <= (sizeN/2); fy++)
+				for (int fx = -(sizeN / 2); fx <= (sizeN / 2); fx++)
 				{
 					int tx = x + fx;
 					int ty = y + fy;	
-					if ((tx>=0) && (ty>=0) && (tx < myWidth) && (ty < myHeight)) {
-						total += imageBuffer->getVector(tx, ty);
-					}					
+					total += imageBuffer->getVector(tx, ty)*ArrayF.getVector(fx + (sizeN / 2), fy + (sizeN / 2));	
 				}
-		
-			total = total / 9;
 			imageBuffer->setVector(x, y, total);
 		}
 	}
-
-
-
 	return *imageBuffer;
 }
 
